@@ -53,3 +53,39 @@ jobs:
         run: go run main.go init --frontend vue app
       - name: Build the Docker image
         run: cd app && docker build .
+
+  postgres-build:
+    name: Build PostgreSQL project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+        id: go
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: "Regenerate templates TODO: remove this step"
+        run: cd transform && go run transformer.go
+      - name: Generate PostgreSQL project
+        run: go run main.go init --db postgres app
+      - name: Build the Docker image
+        run: cd app && docker build .
+
+  mysql-build:
+    name: Build MySQL project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+        id: go
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: "Regenerate templates TODO: remove this step"
+        run: cd transform && go run transformer.go
+      - name: Generate MySQL project
+        run: go run main.go init --db mysql app
+      - name: Build the Docker image
+        run: cd app && docker build .
